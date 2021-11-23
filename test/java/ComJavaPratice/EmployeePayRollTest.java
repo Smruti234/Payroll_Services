@@ -37,7 +37,7 @@ public class EmployeePayRollTest {
         EmployeePayRollService employeePayRollService = new EmployeePayRollService();
         employeePayRollService.readEmployeePayRoll();
         Map<String, Double> averageSalaryByGender = employeePayRollService.readAverageSalaryByGender();
-        Assert.assertTrue(averageSalaryByGender.get("M").equals(40000000.00) && averageSalaryByGender.get("F").equals(1600000.00));
+        Assert.assertTrue(averageSalaryByGender.get("M").equals(40000000) && averageSalaryByGender.get("F").equals(1600000));
     }
 
     @Test
@@ -45,6 +45,16 @@ public class EmployeePayRollTest {
         EmployeePayRollService employeePayRollService = new EmployeePayRollService();
         employeePayRollService.readEmployeePayRoll();
         Map<String, Integer> countByGender = employeePayRollService.readCountSalaryByGender();
+        System.out.println(countByGender);
         Assert.assertTrue(countByGender.get("M").equals(1) && countByGender.get("F").equals(2));
+    }
+
+    @Test
+    public void givenNewEmployee_WhenAdded_ShouldSyncWithDB(){
+        EmployeePayRollService employeePayRollService = new EmployeePayRollService();
+        employeePayRollService.readEmployeePayRoll();
+        employeePayRollService.addEmployeePayroll("Mitu",  200000, LocalDate.now(), "F");
+        boolean result = employeePayRollService.checkEmployeePayrollInSyncWithDB("Mitu");
+        Assert.assertTrue(result);
     }
 }
