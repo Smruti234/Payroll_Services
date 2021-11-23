@@ -1,5 +1,6 @@
 package ComJavaPratice;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class EmployeePayRollService {
@@ -37,5 +38,9 @@ public class EmployeePayRollService {
     public boolean checkEmployeePayrollInSyncWithDB(String name) {
         List<PayRollData> employeePayrollDataList = employeePayRoll.getEmployeePayrollData(name);
         return employeePayrollDataList.get(0).equals(getEmployeePayRollData(name));
+    }
+
+    public List<PayRollData> readEmployeePayRollForDateRange(LocalDate startDate, LocalDate endDate) {
+        return employeePayRoll.getEmployeeForDateRange(startDate, endDate);
     }
 }
