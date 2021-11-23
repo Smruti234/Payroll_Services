@@ -5,6 +5,7 @@ import org.junit.Test;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public class EmployeePayRollTest {
     @Test
@@ -30,5 +31,20 @@ public class EmployeePayRollTest {
         LocalDate endDate = LocalDate.now();
         List<PayRollData> employeePayRollData = employeePayRollService.readEmployeePayRollForDateRange(startDate, endDate);
         Assert.assertEquals(2, employeePayRollData.size());
+    }
+    @Test
+    public void givenPayrollData_WhenAverageSalaryRetrieveByGender_ShouldReturnProperValue(){
+        EmployeePayRollService employeePayRollService = new EmployeePayRollService();
+        employeePayRollService.readEmployeePayRoll();
+        Map<String, Double> averageSalaryByGender = employeePayRollService.readAverageSalaryByGender();
+        Assert.assertTrue(averageSalaryByGender.get("M").equals(40000000.00) && averageSalaryByGender.get("F").equals(1600000.00));
+    }
+
+    @Test
+    public void givenPayrollData_WhenCountByGender_ShouldReturnCount(){
+        EmployeePayRollService employeePayRollService = new EmployeePayRollService();
+        employeePayRollService.readEmployeePayRoll();
+        Map<String, Integer> countByGender = employeePayRollService.readCountSalaryByGender();
+        Assert.assertTrue(countByGender.get("M").equals(1) && countByGender.get("F").equals(2));
     }
 }

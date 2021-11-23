@@ -3,7 +3,9 @@ package ComJavaPratice;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class EmployeePayRoll {
     private PreparedStatement employeePayrollDataStatement;
@@ -103,5 +105,39 @@ public class EmployeePayRoll {
             e.printStackTrace();
         }
         return payRollDataList;
+    }
+
+    public Map<String, Double> getAverageSalaryByGender() {
+        String sql = "select gender, AVG(salary) as avg_salary FROM employee_payroll GROUP BY gender";
+        Map<String, Double> genderToAverageSalaryMap = new HashMap<>();
+        try (Connection connection = this.getConnection()){
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()){
+                String gender = resultSet.getString("gender");
+                double salary = resultSet.getDouble("avg_salary");
+                genderToAverageSalaryMap.put(gender, salary);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return genderToAverageSalaryMap;
+    }
+
+    public Map<String, Integer> getCountByGender() {
+        String sql = "select gender, count(gender) as count from employee_payroll GROUP BY gender";
+        Map<String, Integer> genderToAverageSalaryMap = new HashMap<>();
+        try (Connection connection = this.getConnection()){
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+            while (resultSet.next()){
+                String gender = resultSet.getString("gender");
+                int count = resultSet.getInt("count");
+                genderToAverageSalaryMap.put(gender, count);
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+        }
+        return genderToAverageSalaryMap;
     }
 }
